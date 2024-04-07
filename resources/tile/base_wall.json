@@ -1,0 +1,5 @@
+{
+	"id": 1,
+	"collision": true,
+	"texture": "resources\\sprites\\tile\\base_wall_bottom.png"
+}
