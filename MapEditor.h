@@ -7,21 +7,26 @@
 #include <SFML/Network.hpp>
 
 #include "setup.h"
-#include "Entity.h"
-#include "Player.h"
 #include "KeyBoardManager.h"
 #include "MapManager.h"
+#include "TilesBoard.h"
 
-class Game
+class MapEditor
 {
 private:
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
+	sf::Vector2f screenPosition;
+
 	KeyBoardManager kbc;
 	MapManager mapM;
+	TilesBoard* tileBoard;
 
-	Player* player;
+	float scale;
+	float speed;
+
+	int paintbrush;
 
 	void initVariables();
 	void initWindow();
@@ -31,9 +36,8 @@ private:
 	void update();
 	void render();
 public:
-	Game();
-	virtual ~Game();
+	MapEditor();
+	virtual ~MapEditor();
 
 	void gameLoop();
-	void creatorMapLoop();
 };

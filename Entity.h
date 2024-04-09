@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "setup.h"
+#include "MapManager.h"
 #include "MyFunctions.h"
 
 class Entity
@@ -17,6 +18,7 @@ private:
 	static Entity** entityList;
 	static int entityNumber;
 
+	static MapManager* mapM;
 public:
 	static int getEntityNumber();
 	static Entity* getEntity(int index);
@@ -26,7 +28,9 @@ public:
 	static void popEntity(Entity* pEntity);
 	static void clearEntitys();
 
+	static void setMapManager(MapManager* pMapM);
 private:
+
 	int entityId;
 
 	sf::Texture texture;
@@ -34,7 +38,6 @@ private:
 	bool rotate;
 
 	sf::Vector2f movementVector;
-
 protected:
 	
 	sf::Vector2f position;

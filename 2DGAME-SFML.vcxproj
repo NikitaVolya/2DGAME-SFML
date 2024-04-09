@@ -137,16 +137,24 @@
     <ClCompile Include="KeyBoardManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MyFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TilesBoard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="KeyBoardManager.h" />
+    <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="MapManager.h" />
     <ClInclude Include="MyFunctions.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="setup.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="TilesBoard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

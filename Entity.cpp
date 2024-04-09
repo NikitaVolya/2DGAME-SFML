@@ -1,15 +1,5 @@
 #include "Entity.h"
 
-void Entity::loadTexture(const char* pFile)
-{
-	texture.loadFromFile(pFile);
-	sf::Vector2u textureSize = texture.getSize();
-
-	sprite.setTexture(texture);
-	sprite.setScale(size.x / textureSize.x, size.y / textureSize.y);
-}
-
-
 //Static methods
 int Entity::getEntityNumber()
 {
@@ -75,6 +65,20 @@ void Entity::clearEntitys()
 	for (int i = 0; i < entityNumber; i++)
 		delete entityList[i];
 	delete[] entityList;
+
+	entityNumber = 0;
+}
+
+void Entity::setMapManager(MapManager* pMapM)
+{
+	mapM = pMapM;
+}
+
+
+//private functions
+void Entity::loadTexture(const char* pFile)
+{
+	MyFuncs::loadTexture(pFile, &texture, &sprite, size);
 }
 
 
@@ -141,7 +145,24 @@ void Entity::addMovementImpulse(sf::Vector2f pVector)
 
 void Entity::move()
 {
-	position += MyFuncs::divisionVector(movementVector, FRAME_RATE);
+	sf::Vector2f deltaPosition = MyFuncs::divisionVector(movementVector, FRAME_RATE);
+
+	sf::Vector2f positionLeftTop = position + sf::Vector2f(0, size.y * 0.6f);
+	sf::Vector2f positionRightTop = position + sf::Vector2f(size.x, size.y * 0.6f);
+	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.1f, size.y * 0.9f);
+	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.8f, size.y * 0.9f);
+
+	if (!Entity::mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) && 
+		!Entity::mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) &&
+		!Entity::mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) &&
+		!Entity::mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
+		position.x += deltaPosition.x;
+
+	if (!Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) &&
+		!Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) &&
+		!Entity::mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) &&
+		!Entity::mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
+		position.y += deltaPosition.y;
 
 	sf::Vector2f fVector = movementVector * F;
 	movementVector -= MyFuncs::divisionVector(fVector, FRAME_RATE);

@@ -7,9 +7,12 @@ class KeyBoardManager
 {
 private:
 	bool up, left, right, bottom, escape;
-	sf::Event ev;
+	bool mouseLeft, mouseRight;
+	int mouseWheel;
+
+	sf::Vector2i mousePosition;
 public:
-	KeyBoardManager();
+	KeyBoardManager() : up(false), left(false), right(false), bottom(false), escape(false), mouseLeft(false), mouseRight(false) {};
 
 	bool getUp() { return up; };
 	bool getLeft() { return left; };
@@ -17,7 +20,18 @@ public:
 	bool getBottom() { return bottom; };
 	bool getEscape() { return escape; };
 
-	void pollKeyPressed();
-	void pollKeyReleased();
+	bool getMouseLeft() { return mouseLeft; };
+	bool getMouseRight() { return mouseRight; };
+
+	int getMouseWheel() { return mouseWheel; };
+
+	sf::Vector2i getMousePosition() { return mousePosition; };
+
+	void pollKeyPressed(sf::Event ev);
+	void pollKeyReleased(sf::Event ev);
+
+	void pollMousePressed(sf::Event ev);
+	void pollMouseReleased(sf::Event ev);
+
 	void pollEvents(sf::RenderWindow* window);
 };

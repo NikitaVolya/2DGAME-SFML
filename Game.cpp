@@ -3,6 +3,8 @@
 void Game::initVariables()
 {
 	window = nullptr;
+
+	mapM.loadMap();
 }
 
 void Game::initWindow()
@@ -15,10 +17,42 @@ void Game::initWindow()
 	window->setFramerateLimit(FRAME_RATE);
 }
 
+void Game::pollEvents()
+{
+	kbc.pollEvents(window);
+
+	if (kbc.getEscape())
+	{
+		window->close();
+		return;
+	}
+}
+
+void Game::update()
+{
+	pollEvents();
+
+	for (int i = 0; i < Entity::getEntityNumber(); i++)
+		Entity::getEntity(i)->update();
+}
+
+void Game::render()
+{
+	window->clear(sf::Color(0, 0, 0, 255));
+
+	mapM.draw(window);
+
+	for (int i = 0; i < Entity::getEntityNumber(); i++)
+		Entity::getEntity(i)->draw(window);
+
+	window->display();
+}
 
 Game::Game()
 {
-	player = new Player(&kbc , sf::Vector2f(0.f, 0.f));
+	Entity::setMapManager(&mapM);
+
+	player = new Player(&kbc, sf::Vector2f(PIXEL_SIZE * 2.1f, PIXEL_SIZE * 2.1f));
 
 	initVariables();
 	initWindow();
@@ -31,31 +65,12 @@ Game::~Game()
 	delete window;
 }
 
-const bool Game::isRunning() const
+void Game::gameLoop()
 {
-	return window->isOpen();
-}
-
-void Game::update()
-{
-	kbc.pollEvents(window);
-
-	if (kbc.getEscape())
+	while (window->isOpen())
 	{
-		window->close();
-		return;
+		update();
+
+		render();
 	}
-
-	for (int i = 0; i < Entity::getEntityNumber(); i++)
-		Entity::getEntity(i)->update();
-}
-
-void Game::render()
-{
-	window->clear(sf::Color(0, 0, 0, 255));
-
-	for (int i = 0; i < Entity::getEntityNumber(); i++)
-		Entity::getEntity(i)->draw(window);
-
-	window->display();
 }
