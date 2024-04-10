@@ -47,7 +47,7 @@ void MapEditor::update()
 		sf::Vector2i position = kbc.getMousePosition() + MyFuncs::toVectorInteger(screenPosition);
 
 
-		if (position.y > 0 && position.y < SCREEN_HEIGHT)
+		if (kbc.getMousePosition().y < SCREEN_HEIGHT)
 		{
 			position = MyFuncs::divisionVector(position, scale * PIXEL_SIZE);
 

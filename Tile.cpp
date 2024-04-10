@@ -9,7 +9,7 @@ void Tile::setTextrure(const char* pImage)
 {
     char loadHref[66] = TILES_FILES;
 
-    MyFuncs::CharCpy(loadHref + 23, pImage, 43);
+    MyFuncs::CharCopy(loadHref + 23, pImage, 43);
     MyFuncs::loadTexture(loadHref, &texture, &sprite, PIXEL_SIZE);
 }
 

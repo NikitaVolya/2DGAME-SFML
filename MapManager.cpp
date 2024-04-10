@@ -1,5 +1,53 @@
 #include "MapManager.h"
 
+
+void MapManager::loadTiles()
+{
+
+	FILE* f = nullptr;
+	fopen_s(&f, "resources\\data\\tilesData", "ab");
+	fclose(f);
+	fopen_s(&f, "resources\\data\\tilesData", "rb");
+
+	tileNumber = _filelength(_fileno(f)) / sizeof(TileData);
+	tileList = new Tile * [tileNumber];
+
+	TileData data;
+	for (int i = 0; i < tileNumber; i++)
+	{
+		fread(&data, sizeof(data), 1, f);
+		tileList[i] = new Tile(i, data);
+	}
+
+	fclose(f);
+}
+
+void MapManager::saveTiles()
+{
+	if (!tileList)
+		return;
+
+	FILE* f = nullptr;
+	fopen_s(&f, "resources\\data\\tilesData", "wb");
+	for (int i = 0; i < tileNumber; i++)
+	{
+		if (tileList[i])
+		{
+			TileData data = tileList[i]->toTileData();
+			fwrite(&data, sizeof(TileData), 1, f);
+		}
+		else
+		{
+			TileData data = tileList[0]->toTileData();
+			fwrite(&data, sizeof(TileData), 1, f);
+		}
+	}
+
+
+	fclose(f);
+}
+
+
 void MapManager::clearTileList()
 {
 	for (unsigned int i = 0; i < tileNumber; i++)
@@ -42,49 +90,6 @@ void MapManager::createClearMap()
 		for (int x = 0; x < width; x++)
 			table[y][x] = tileList[0];
 	}
-}
-
-void MapManager::loadTiles()
-{
-
-	FILE* f = nullptr;
-	fopen_s(&f, "resources\\data\\tilesData", "ab");
-	fclose(f);
-	fopen_s(&f, "resources\\data\\tilesData", "rb");
-
-	tileNumber = _filelength(_fileno(f)) / sizeof(TileData);
-	tileList = new Tile * [tileNumber];
-
-	TileData data;
-	for (int i = 0; i < tileNumber; i++)
-	{
-		fread(&data, sizeof(data), 1, f);
-		tileList[i] = new Tile(i, data);
-	}
-
-	fclose(f);
-}
-
-void MapManager::saveTiles()
-{
-	FILE* f = nullptr;
-	fopen_s(&f, "resources\\data\\tilesData", "wb");
-	for (int i = 0; i < tileNumber; i++)
-	{
-		if (tileList[i])
-		{
-			TileData data = tileList[i]->toTileData();
-			fwrite(&data, sizeof(TileData), 1, f);
-		}
-		else
-		{
-			TileData data = tileList[0]->toTileData();
-			fwrite(&data, sizeof(TileData), 1, f);
-		}
-	}
-
-
-	fclose(f);
 }
 
 void MapManager::loadMap()
@@ -183,6 +188,7 @@ Tile* MapManager::getTileType(int pTileID) const
 	return tileList[pTileID];
 }
 
+
 void MapManager::changeTileOnMap(int pTileID, int x, int y)
 {
 	if (pTileID < 0 || pTileID > tileNumber)
@@ -205,6 +211,8 @@ void MapManager::changeTileOnMap(int pTileID, int x, int y)
 
 	table[y][x] = tileList[pTileID];
 }
+
+
 
 void MapManager::addNewTileType(bool pColision, const char* pImage)
 {
@@ -293,9 +301,3 @@ void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, fl
 			table[y][x]->draw(window, sf::Vector2f(x * pixelScale, y * pixelScale) - screenPosition, pScale);
 }
 
-void MapManager::printTileListe()
-{
-	for (int i = 0; i < tileNumber; i++)
-		if (tileList[i])
-			std::cout << tileList[i]->getTileID() << " | " << tileList[i]->getColision() << " | " << tileList[i]->getTextureHref() << std::endl;
-}

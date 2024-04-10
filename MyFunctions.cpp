@@ -91,7 +91,7 @@ void MyFuncs::setScale(sf::Sprite* sprite, const float pScale)
     sprite->setScale(PIXEL_SIZE * pScale / size.x , PIXEL_SIZE * pScale / size.y);
 }
 
-void MyFuncs::CharCpy(char* value, const char* source, const int size)
+void MyFuncs::CharCopy(char* value, const char* source, const int size)
 {
     for (int i = 0; i < size; i++)
         value[i] = source[i];

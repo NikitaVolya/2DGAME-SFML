@@ -17,16 +17,18 @@ private:
 	unsigned short width;
 	unsigned short height;
 
+	void loadTiles();
+	void saveTiles();
+
 	void clearTileList();
 	void clearTable();
+
+	
 public:
 	MapManager();
 	~MapManager();
 
 	void createClearMap();
-
-	void loadTiles();
-	void saveTiles();
 
 	void loadMap();
 	void saveMap();
@@ -41,6 +43,7 @@ public:
 	bool getColision(float x, float y) const;
 
 	Tile* getTileType(int pTileID) const;
+	
 	void changeTileOnMap(int pTileID, int x, int y);
 
 	void addNewTileType(bool pColision, const char* pImage);
@@ -50,7 +53,5 @@ public:
 	void draw(sf::RenderWindow* window, float pScale = 1.f);
 	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition);
 	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, float pScale = 1.f);
-
-	void printTileListe();
 };
 

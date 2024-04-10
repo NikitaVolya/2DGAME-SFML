@@ -1,6 +1,6 @@
 #pragma once
 
-#define CREATOR_MODE true
+#define CREATOR_MODE false
 #define TILES_FILES "resources\\sprites\\tile\\"
 
 #define FRAME_RATE 60

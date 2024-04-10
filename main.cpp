@@ -4,16 +4,13 @@
 #include "MapEditor.h"
 
 int Entity::globalID = 0;
-
 Entity** Entity::entityList = nullptr;
 int Entity::entityNumber = 0;
-
 MapManager* Entity::mapM = nullptr;
 
 void tileManager()
 {
 	MapManager mapM;
-	mapM.loadTiles();
 
 	int choice;
 	while (true)
@@ -33,7 +30,12 @@ void tileManager()
 		switch (choice)
 		{
 		case 1:
-			mapM.printTileListe();
+			for (int i = 0; i < mapM.getTileNumber(); i++)
+			{
+				const Tile* tmp = mapM.getTileType(i);
+				if (tmp)
+					std::cout << tmp->getTileID() << " | " << tmp->getColision() << " | " << tmp->getTextureHref() << std::endl;
+			}
 			break;
 		case 2:
 			std::cout << "Start adding new tile. \n";

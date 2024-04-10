@@ -52,7 +52,7 @@ Game::Game()
 {
 	Entity::setMapManager(&mapM);
 
-	player = new Player(&kbc, sf::Vector2f(PIXEL_SIZE * 2.1f, PIXEL_SIZE * 2.1f));
+	player = new Player(&kbc, sf::Vector2f(PIXEL_SIZE * 2.f, PIXEL_SIZE * 2.f));
 
 	initVariables();
 	initWindow();

@@ -13,7 +13,7 @@ class TileData
 {
 public:
 	TileData() : colision(false), textureHref("") {};
-	TileData(bool pColision, const char* pTextureHref) : colision(pColision), textureHref("") { MyFuncs::CharCpy(textureHref, pTextureHref, 43);};
+	TileData(bool pColision, const char* pTextureHref) : colision(pColision), textureHref("") { MyFuncs::CharCopy(textureHref, pTextureHref, 43);};
 	bool colision;
 	char textureHref[43];
 };
@@ -41,4 +41,6 @@ public:
 	const TileData toTileData() const;
 
 	void draw(sf::RenderWindow* window, const sf::Vector2f pPosition, const float pScale = 1.f);
+
+	void printTextureHref() const { std::cout << textureHref; }
 };

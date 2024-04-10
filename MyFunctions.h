@@ -31,5 +31,5 @@ namespace MyFuncs
 	void loadTexture(const char* pFile, sf::Texture* texture, sf::Sprite* sprite, float size);
 	void setScale(sf::Sprite* sprite, const float pScale);
 
-	void CharCpy(char* value, const char* source, const int size);
+	void CharCopy(char* value, const char* source, const int size);
 }
