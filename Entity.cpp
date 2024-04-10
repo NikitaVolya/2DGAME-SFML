@@ -31,7 +31,7 @@ void Entity::popEntity(int index)
 	int move = 0;
 	for (int i = 0; i < entityNumber; i++)
 		newEntityList[i] = entityList[i < index ? i : i - 1];
-
+	delete entityList[index];
 	delete entityList;
 	entityList = newEntityList;
 }
@@ -152,17 +152,19 @@ void Entity::move()
 	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.1f, size.y * 0.9f);
 	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.8f, size.y * 0.9f);
 
-	if (!Entity::mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) && 
-		!Entity::mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) &&
-		!Entity::mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) &&
-		!Entity::mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
-		position.x += deltaPosition.x;
+	if (Entity::mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) || 
+		Entity::mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) ||
+		Entity::mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) ||
+		Entity::mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
+		deltaPosition.x = 0;
 
-	if (!Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) &&
-		!Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) &&
-		!Entity::mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) &&
-		!Entity::mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
-		position.y += deltaPosition.y;
+	if (Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
+		Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
+		Entity::mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) ||
+		Entity::mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
+		deltaPosition.y = 0;
+
+	position += deltaPosition;
 
 	sf::Vector2f fVector = movementVector * F;
 	movementVector -= MyFuncs::divisionVector(fVector, FRAME_RATE);

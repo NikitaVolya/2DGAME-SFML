@@ -14,8 +14,8 @@ private:
 
 	Tile*** table;
 
-	unsigned int width;
-	unsigned int height;
+	unsigned short width;
+	unsigned short height;
 
 	void clearTileList();
 	void clearTable();
@@ -31,23 +31,25 @@ public:
 	void loadMap();
 	void saveMap();
 
-	int getWidth() { return width; };
-	int getHeight() { return height; };
+	short getWidth() const { return width; };
+	short getHeight() const { return height; };
 
-	unsigned int getTileNumber() { return tileNumber; };
+	unsigned int getTileNumber() const { return tileNumber; };
 
-	bool getColision(sf::Vector2f pPosition);
-	bool getColision(int x, int y);
+	bool getColision(sf::Vector2f& pPosition) const;
+	bool getColision(int x, int y) const;
+	bool getColision(float x, float y) const;
 
-	Tile* getTileType(int pTileID);
+	Tile* getTileType(int pTileID) const;
 	void changeTileOnMap(int pTileID, int x, int y);
 
-	void addNewTile(bool pColision, const char* pImage);
-	void changeTile(int pTileID, bool pColision, const char* pImage);
-	void deleteTile(int pTileID);
+	void addNewTileType(bool pColision, const char* pImage);
+	void changeTileType(int pTileID, bool pColision, const char* pImage);
+	void deleteTileType(int pTileID);
 
 	void draw(sf::RenderWindow* window, float pScale = 1.f);
-	void draw(sf::RenderWindow* window, sf::Vector2f screenPosition, float pScale = 1.f);
+	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition);
+	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, float pScale = 1.f);
 
 	void printTileListe();
 };

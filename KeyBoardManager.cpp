@@ -1,6 +1,6 @@
 #include "KeyBoardManager.h"
 
-void KeyBoardManager::pollKeyPressed(sf::Event ev)
+void KeyBoardManager::pollKeyPressed(sf::Event& ev)
 {
 	if (ev.key.code == sf::Keyboard::Escape)
 		escape = true;
@@ -14,7 +14,7 @@ void KeyBoardManager::pollKeyPressed(sf::Event ev)
 		right = true;
 }
 
-void KeyBoardManager::pollKeyReleased(sf::Event ev)
+void KeyBoardManager::pollKeyReleased(sf::Event& ev)
 {
 	if (ev.key.code == sf::Keyboard::Escape)
 		escape = false;
@@ -28,7 +28,7 @@ void KeyBoardManager::pollKeyReleased(sf::Event ev)
 		right = false;
 }
 
-void KeyBoardManager::pollMousePressed(sf::Event ev)
+void KeyBoardManager::pollMousePressed(sf::Event& ev)
 {
 	if (ev.mouseButton.button == sf::Mouse::Left)
 		mouseLeft = true;
@@ -36,7 +36,7 @@ void KeyBoardManager::pollMousePressed(sf::Event ev)
 		mouseRight = true;
 }
 
-void KeyBoardManager::pollMouseReleased(sf::Event ev)
+void KeyBoardManager::pollMouseReleased(sf::Event& ev)
 {
 	if (ev.mouseButton.button == sf::Mouse::Left)
 		mouseLeft = false;
@@ -46,10 +46,10 @@ void KeyBoardManager::pollMouseReleased(sf::Event ev)
 
 void KeyBoardManager::pollEvents(sf::RenderWindow* window)
 {
-	mouseWheel = 0;
-
-	mousePosition = sf::Mouse::getPosition() - window->getPosition() - sf::Vector2i(8, 30);
 	sf::Event ev;
+
+	mouseWheel = 0;
+	mousePosition = sf::Mouse::getPosition() - window->getPosition() - sf::Vector2i(8, 30);
 
 	while (window->pollEvent(ev))
 	{

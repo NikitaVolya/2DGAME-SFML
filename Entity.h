@@ -51,11 +51,11 @@ public:
 	Entity(sf::Vector2f pPosition);
 	~Entity();
 
-	int getEntityID() { return entityId; };
-	sf::Vector2f getPosition() { return position; };
-	sf::Vector2f getSize() { return size; };
-	float getSpeed() { return speed; };
-	int getRotate() { return rotate ? -1 : 1; };
+	int getEntityID() const { return entityId; };
+	sf::Vector2f getPosition() const { return position; };
+	sf::Vector2f getSize() const { return size; };
+	float getSpeed() const { return speed; };
+	int getRotate() const { return rotate ? -1 : 1; };
 
 	void setPosition(sf::Vector2f pPosition) { position = pPosition; };
 	void setSpeed(float pValue);

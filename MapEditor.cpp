@@ -6,7 +6,7 @@ void MapEditor::initVariables()
 
 	screenPosition = sf::Vector2f(0, 0);
 	scale = 1.f;
-	speed = 1.5f;
+	speed = 2.5f;
 	paintbrush = 0;
 
 	mapM.loadMap();
@@ -44,7 +44,9 @@ void MapEditor::update()
 
 	if (kbc.getMouseLeft())
 	{
-		sf::Vector2i position = kbc.getMousePosition() + sf::Vector2i(screenPosition.x, screenPosition.y);
+		sf::Vector2i position = kbc.getMousePosition() + MyFuncs::toVectorInteger(screenPosition);
+
+
 		if (position.y > 0 && position.y < SCREEN_HEIGHT)
 		{
 			position = MyFuncs::divisionVector(position, scale * PIXEL_SIZE);

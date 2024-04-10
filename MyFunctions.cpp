@@ -67,7 +67,7 @@ double MyFuncs::lenghtVector(sf::Vector2f& pVector)
     return sqrt(pVector.x * pVector.x + pVector.y * pVector.y);
 }
 
-void MyFuncs::loadTexture(const char* pFile, sf::Texture* texture, sf::Sprite* sprite, sf::Vector2f size)
+void MyFuncs::loadTexture(const char* pFile, sf::Texture* texture, sf::Sprite* sprite, sf::Vector2f& size)
 {
     texture->loadFromFile(pFile);
     sf::Vector2u textureSize = texture->getSize();
@@ -89,4 +89,10 @@ void MyFuncs::setScale(sf::Sprite* sprite, const float pScale)
 {
     sf::Vector2u size = sprite->getTexture()->getSize();
     sprite->setScale(PIXEL_SIZE * pScale / size.x , PIXEL_SIZE * pScale / size.y);
+}
+
+void MyFuncs::CharCpy(char* value, const char* source, const int size)
+{
+    for (int i = 0; i < size; i++)
+        value[i] = source[i];
 }

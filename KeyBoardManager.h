@@ -11,8 +11,14 @@ private:
 	int mouseWheel;
 
 	sf::Vector2i mousePosition;
+
+	void pollKeyPressed(sf::Event& ev);
+	void pollKeyReleased(sf::Event& ev);
+
+	void pollMousePressed(sf::Event& ev);
+	void pollMouseReleased(sf::Event& ev);
 public:
-	KeyBoardManager() : up(false), left(false), right(false), bottom(false), escape(false), mouseLeft(false), mouseRight(false) {};
+	KeyBoardManager() : up(false), left(false), right(false), bottom(false), escape(false), mouseLeft(false), mouseRight(false), mouseWheel(0) {};
 
 	bool getUp() { return up; };
 	bool getLeft() { return left; };
@@ -26,12 +32,6 @@ public:
 	int getMouseWheel() { return mouseWheel; };
 
 	sf::Vector2i getMousePosition() { return mousePosition; };
-
-	void pollKeyPressed(sf::Event ev);
-	void pollKeyReleased(sf::Event ev);
-
-	void pollMousePressed(sf::Event ev);
-	void pollMouseReleased(sf::Event ev);
 
 	void pollEvents(sf::RenderWindow* window);
 };

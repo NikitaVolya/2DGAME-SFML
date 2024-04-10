@@ -3,7 +3,7 @@
 TilesBoard::TilesBoard(MapManager& pMapM) : mapM(pMapM) {
 	board = sf::RectangleShape(size);
 	board.setPosition(sf::Vector2f(0, SCREEN_HEIGHT));
-	board.setFillColor(sf::Color::Black);
+	board.setFillColor(sf::Color::White);
 };
 
 void TilesBoard::update(KeyBoardManager* kbc, int& paintbrush)
@@ -29,6 +29,6 @@ void TilesBoard::draw(sf::RenderWindow* window)
 	for (int i = 0; i < mapM.getTileNumber(); i++)
 	{
 		Tile* tmpTile = mapM.getTileType(i);
-		tmpTile->draw(window, sf::Vector2f(i * PIXEL_SIZE, SCREEN_HEIGHT + PIXEL_SIZE / 2));
+		tmpTile->draw(window, sf::Vector2f((float)i * PIXEL_SIZE, SCREEN_HEIGHT + PIXEL_SIZE / 2.f));
 	}
 }

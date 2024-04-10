@@ -10,7 +10,7 @@ void MapManager::clearTileList()
 
 void MapManager::clearTable()
 {
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < (int) height; i++)
 		delete[] table[i];
 	delete[] table;
 	height = 0;
@@ -91,23 +91,27 @@ void MapManager::loadMap()
 {
 	clearTable();
 
+	std::cout << "[INFO] MapManager: start load map\nopen file\n";
+
 	FILE* f = nullptr;
 
 	fopen_s(&f, "resources\\data\\mapData", "ab");
 	fclose(f);
 	fopen_s(&f, "resources\\data\\mapData", "rb");
 
-	fread(&width, sizeof(int), 1, f);
-	fread(&height, sizeof(int), 1, f);
+	fread(&width, sizeof(short), 1, f);
+	fread(&height, sizeof(short), 1, f);
+
+	std::cout << "[INFO] MapManager: load map with size: " << width << " x " << height << "\n";
 	
-	unsigned int IdData;
+	unsigned short IdData;
 	table = new Tile * *[height];
 	for (int y = 0; y < height; y++)
 	{
 		table[y] = new Tile * [width];
 		for (int x = 0; x < width; x++)
 		{
-			fread(&IdData, sizeof(int), 1, f);
+			fread(&IdData, sizeof(short), 1, f);
 			table[y][x] = getTileType(IdData);
 		}
 	}
@@ -120,20 +124,20 @@ void MapManager::saveMap()
 	FILE* f = nullptr;
 	fopen_s(&f, "resources\\data\\mapData", "wb");
 
-	fwrite(&width, sizeof(unsigned int), 1, f);
-	fwrite(&height, sizeof(unsigned int), 1, f);
+	fwrite(&width, sizeof(short), 1, f);
+	fwrite(&height, sizeof(short), 1, f);
 
 	for (int y = 0; y < height; y++)
 		for (int x = 0; x < width; x++)
 		{
 			unsigned int tileIdData = table[y][x]->getTileID();
-			fwrite(&tileIdData, sizeof(unsigned int), 1, f);
+			fwrite(&tileIdData, sizeof(short), 1, f);
 		}
 
 	fclose(f);
 }
 
-bool MapManager::getColision(sf::Vector2f pPosition)
+bool MapManager::getColision(sf::Vector2f& pPosition) const
 {
 	pPosition = MyFuncs::divisionVector(pPosition, PIXEL_SIZE);
 	sf::Vector2i positionInteger = MyFuncs::toVectorInteger(pPosition);
@@ -145,23 +149,35 @@ bool MapManager::getColision(sf::Vector2f pPosition)
 	return table[positionInteger.y][positionInteger.x]->getColision();
 }
 
-bool MapManager::getColision(int x, int y)
+bool MapManager::getColision(int x, int y) const
 {
 	x /= PIXEL_SIZE;
 	y /= PIXEL_SIZE;
 
-	if (0 > x || x >= width)
+	if (0 > x || x >= (int)width)
 		return true;
-	if (0 > y || y >= height)
+	if (0 > y || y >= (int)height)
 		return true;
 	return table[y][x]->getColision();
 }
 
-Tile* MapManager::getTileType(int pTileID)
+bool MapManager::getColision(float x, float y) const
+{
+	x /= PIXEL_SIZE;
+	y /= PIXEL_SIZE;
+
+	if (0 > x || (int)x >= (int)width)
+		return true;
+	if (0 > y || (int)y >= (int)height)
+		return true;
+	return table[(int)y][(int)x]->getColision();
+}
+
+Tile* MapManager::getTileType(int pTileID) const
 {
 	if (pTileID < 0 || pTileID >= tileNumber)
 	{
-		std::cout << "Invalide tile ID\n";
+		std::cout << "[INFO] MapManager: Invalide tile ID\n";
 		return nullptr;
 	}
 	return tileList[pTileID];
@@ -171,26 +187,26 @@ void MapManager::changeTileOnMap(int pTileID, int x, int y)
 {
 	if (pTileID < 0 || pTileID > tileNumber)
 	{
-		std::cout << "Invalide tile ID\n";
+		std::cout << "[INFO] MapManager: Invalide tile ID\n";
 		return;
 	}
 
 	if (x < 0 || x > width)
 	{
-		std::cout << "Invalide [x] position ID\n";
+		std::cout << "[INFO] MapManager: Invalide x position\n";
 		return;
 	}
 
 	if (y < 0 || y > height)
 	{
-		std::cout << "Invalide [y] position ID\n";
+		std::cout << "[INFO] MapManager: Invalide y position\n";
 		return;
 	}
 
 	table[y][x] = tileList[pTileID];
 }
 
-void MapManager::addNewTile(bool pColision, const char* pImage)
+void MapManager::addNewTileType(bool pColision, const char* pImage)
 {
 	for (int i = 0; i < tileNumber; i++)
 		if (tileList[i] == nullptr)
@@ -211,11 +227,11 @@ void MapManager::addNewTile(bool pColision, const char* pImage)
 	saveTiles();
 }
 
-void MapManager::changeTile(int pTileID, bool pColision, const char* pImage)
+void MapManager::changeTileType(int pTileID, bool pColision, const char* pImage)
 {
 	if (pTileID < 0 || pTileID >= tileNumber)
 	{
-		std::cout << "invalid index \n";
+		std::cout << "[INFO] MapManager: invalid index \n";
 		return;
 	}
 	
@@ -224,7 +240,7 @@ void MapManager::changeTile(int pTileID, bool pColision, const char* pImage)
 	saveTiles();
 }
 
-void MapManager::deleteTile(int pTileID)
+void MapManager::deleteTileType(int pTileID)
 {
 	delete tileList[pTileID];
 	tileList[pTileID] = nullptr;
@@ -235,15 +251,29 @@ void MapManager::deleteTile(int pTileID)
 void MapManager::draw(sf::RenderWindow* window, float pScale)
 {
 	for (int y = 0; y < height; y++)
-	{
 		for (int x = 0; x < width; x++)
-		{
 			table[y][x]->draw(window, sf::Vector2f(x * PIXEL_SIZE * pScale, y * PIXEL_SIZE * pScale), pScale);
-		}
-	}
 }
 
-void MapManager::draw(sf::RenderWindow* window, sf::Vector2f screenPosition, float pScale)
+void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition)
+{
+	sf::Vector2f startPosition = MyFuncs::divisionVector(screenPosition, PIXEL_SIZE);
+
+	sf::Vector2f endPosition = screenPosition + sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT);
+	endPosition = MyFuncs::divisionVector(endPosition, PIXEL_SIZE);
+
+	int startY = std::max(0, (int)startPosition.y);
+	int startX = std::max(0, (int)startPosition.x);
+
+	int endY = std::min((int)endPosition.y + 1, (int)height);
+	int endX = std::min((int)endPosition.x + 1, (int)width);
+
+	for (int y = startY; y < endY; y++)
+		for (int x = startX; x < endX; x++)
+			table[y][x]->draw(window, sf::Vector2f(x * PIXEL_SIZE, y * PIXEL_SIZE) - screenPosition);
+}
+
+void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, float pScale)
 {
 	float pixelScale = PIXEL_SIZE * pScale;
 

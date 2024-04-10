@@ -44,7 +44,7 @@ void tileManager()
 			std::cout << "Enter filename to image of new tile: ";
 			std::cin >> pImage;
 
-			mapM.addNewTile(pColision, pImage);
+			mapM.addNewTileType(pColision, pImage);
 			break;
 		case 3:
 			std::cout << "Start adding new tile. \n";
@@ -55,14 +55,14 @@ void tileManager()
 			std::cout << "Enter new filename to image of new tile: ";
 			std::cin >> pImage;
 
-			mapM.changeTile(pIndex, pColision, pImage);
+			mapM.changeTileType(pIndex, pColision, pImage);
 			break;
 		case 4:
 			std::cout << "Start deleting one tile. \n";
 
 			std::cout << "Enter index of tile: ";
 			std::cin >> pIndex;
-			mapM.deleteTile(pIndex);
+			mapM.deleteTileType(pIndex);
 			break;
 		case 5:
 			return;
