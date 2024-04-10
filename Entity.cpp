@@ -147,10 +147,11 @@ void Entity::move()
 {
 	sf::Vector2f deltaPosition = MyFuncs::divisionVector(movementVector, FRAME_RATE);
 
-	sf::Vector2f positionLeftTop = position + sf::Vector2f(0, size.y * 0.6f);
-	sf::Vector2f positionRightTop = position + sf::Vector2f(size.x, size.y * 0.6f);
-	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.1f, size.y * 0.9f);
-	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.8f, size.y * 0.9f);
+	sf::Vector2f positionLeftTop = position + sf::Vector2f(size.x * 0.3f, size.y * 0.6f);
+	sf::Vector2f positionRightTop = position + sf::Vector2f(size.x * 0.7f, size.y * 0.6f);
+
+	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.3f, size.y * 0.8f);
+	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.7f, size.y * 0.8f);
 
 	if (Entity::mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) || 
 		Entity::mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) ||
@@ -158,7 +159,7 @@ void Entity::move()
 		Entity::mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
 		deltaPosition.x = 0;
 
-	if (Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
+	if (Entity::mapM->getColision(positionLeftTop.x, positionLeftTop.y + deltaPosition.y) ||
 		Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
 		Entity::mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) ||
 		Entity::mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
@@ -175,9 +176,9 @@ void Entity::update()
 	move();
 }
 
-void Entity::draw(sf::RenderWindow* window)
+void Entity::draw(sf::RenderWindow* window, Camera* camera)
 {
-	sf::Vector2f drawPosition = position;
+	sf::Vector2f drawPosition = position - camera->getPosition();
 
 	if (rotate)
 		drawPosition += sf::Vector2f(size.x, 0);

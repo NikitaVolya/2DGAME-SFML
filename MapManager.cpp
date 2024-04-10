@@ -144,8 +144,8 @@ void MapManager::saveMap()
 
 bool MapManager::getColision(sf::Vector2f& pPosition) const
 {
-	pPosition = MyFuncs::divisionVector(pPosition, PIXEL_SIZE);
-	sf::Vector2i positionInteger = MyFuncs::toVectorInteger(pPosition);
+	sf::Vector2f position = MyFuncs::divisionVector(pPosition, PIXEL_SIZE);
+	sf::Vector2i positionInteger = MyFuncs::toVectorInteger(position);
 
 	if (0 > positionInteger.x && positionInteger.x >= width)
 		return true;
@@ -256,35 +256,11 @@ void MapManager::deleteTileType(int pTileID)
 	saveTiles();
 }
 
-void MapManager::draw(sf::RenderWindow* window, float pScale)
+void MapManager::draw(sf::RenderWindow* window, Camera* camera)
 {
-	for (int y = 0; y < height; y++)
-		for (int x = 0; x < width; x++)
-			table[y][x]->draw(window, sf::Vector2f(x * PIXEL_SIZE * pScale, y * PIXEL_SIZE * pScale), pScale);
-}
+	float pixelScale = PIXEL_SIZE * camera->getScale();
 
-void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition)
-{
-	sf::Vector2f startPosition = MyFuncs::divisionVector(screenPosition, PIXEL_SIZE);
-
-	sf::Vector2f endPosition = screenPosition + sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT);
-	endPosition = MyFuncs::divisionVector(endPosition, PIXEL_SIZE);
-
-	int startY = std::max(0, (int)startPosition.y);
-	int startX = std::max(0, (int)startPosition.x);
-
-	int endY = std::min((int)endPosition.y + 1, (int)height);
-	int endX = std::min((int)endPosition.x + 1, (int)width);
-
-	for (int y = startY; y < endY; y++)
-		for (int x = startX; x < endX; x++)
-			table[y][x]->draw(window, sf::Vector2f(x * PIXEL_SIZE, y * PIXEL_SIZE) - screenPosition);
-}
-
-void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, float pScale)
-{
-	float pixelScale = PIXEL_SIZE * pScale;
-
+	sf::Vector2f screenPosition = camera->getPosition();
 	sf::Vector2f startPosition = MyFuncs::divisionVector(screenPosition, pixelScale);
 
 	sf::Vector2f endPosition = screenPosition + sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -298,6 +274,6 @@ void MapManager::draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, fl
 
 	for (int y = startY; y < endY; y++)
 		for (int x = startX; x < endX; x++)
-			table[y][x]->draw(window, sf::Vector2f(x * pixelScale, y * pixelScale) - screenPosition, pScale);
+			table[y][x]->draw(window, sf::Vector2f(x * pixelScale, y * pixelScale) - screenPosition, camera->getScale());
 }
 

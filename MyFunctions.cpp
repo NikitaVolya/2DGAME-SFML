@@ -1,5 +1,6 @@
 #include "MyFunctions.h"
 
+
 sf::Vector2i MyFuncs::toVectorInteger(sf::Vector2f& pVector)
 {
     return sf::Vector2i((int)pVector.x, (int)pVector.y);
@@ -9,6 +10,7 @@ sf::Vector2i MyFuncs::toVectorInteger(sf::Vector2u& pVector)
 {
     return sf::Vector2i((int)pVector.x, (int)pVector.y);
 }
+
 
 sf::Vector2f MyFuncs::toVectorFloat(sf::Vector2i& pVector)
 {

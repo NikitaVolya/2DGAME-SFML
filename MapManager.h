@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "Camera.h"
 #include "Tile.h"
 
 #include <io.h>
@@ -50,8 +51,6 @@ public:
 	void changeTileType(int pTileID, bool pColision, const char* pImage);
 	void deleteTileType(int pTileID);
 
-	void draw(sf::RenderWindow* window, float pScale = 1.f);
-	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition);
-	void draw(sf::RenderWindow* window, sf::Vector2f& screenPosition, float pScale = 1.f);
+	void draw(sf::RenderWindow* window, Camera* camera);
 };
 

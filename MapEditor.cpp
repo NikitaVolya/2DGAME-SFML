@@ -4,9 +4,6 @@ void MapEditor::initVariables()
 {
 	window = nullptr;
 
-	screenPosition = sf::Vector2f(0, 0);
-	scale = 1.f;
-	speed = 2.5f;
 	paintbrush = 0;
 
 	mapM.loadMap();
@@ -44,34 +41,36 @@ void MapEditor::update()
 
 	if (kbc.getMouseLeft())
 	{
-		sf::Vector2i position = kbc.getMousePosition() + MyFuncs::toVectorInteger(screenPosition);
+		sf::Vector2i position = kbc.getMousePosition() + sf::Vector2i(camera.getPosition().x, camera.getPosition().y);
 
 
 		if (kbc.getMousePosition().y < SCREEN_HEIGHT)
 		{
-			position = MyFuncs::divisionVector(position, scale * PIXEL_SIZE);
+			position = MyFuncs::divisionVector(position, camera.getScale() * PIXEL_SIZE);
 
 			mapM.changeTileOnMap(paintbrush, position.x, position.y);
 		}
 	}
 
+	sf::Vector2f cameraMoveVector(0, 0);
 	if (kbc.getUp())
-		screenPosition.y -= (float)PIXEL_SIZE / FRAME_RATE * speed;
+		cameraMoveVector.y -= PIXEL_SIZE * 2;
 	if (kbc.getLeft())
-		screenPosition.x -= (float)PIXEL_SIZE / FRAME_RATE * speed;
+		cameraMoveVector.x -= PIXEL_SIZE * 2;
 	if (kbc.getBottom())
-		screenPosition.y += (float) PIXEL_SIZE / FRAME_RATE * speed;
+		cameraMoveVector.y += PIXEL_SIZE * 2;
 	if (kbc.getRight())
-		screenPosition.x += (float)PIXEL_SIZE / FRAME_RATE * speed;
+		cameraMoveVector.x += PIXEL_SIZE * 2;
+	camera.moveCamera(cameraMoveVector);
 
-	scale += kbc.getMouseWheel() / 10.f;
+	camera.setScale(camera.getScale() + kbc.getMouseWheel() / 10.f);
 }
 
 void MapEditor::render()
 {
 	window->clear(sf::Color(0, 0, 0, 255));
 
-	mapM.draw(window, screenPosition, scale);
+	mapM.draw(window, &camera);
 	tileBoard->draw(window);
 
 	window->display();

@@ -18,6 +18,7 @@ private:
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
+	Camera camera;
 	KeyBoardManager kbc;
 	MapManager mapM;
 
@@ -35,5 +36,4 @@ public:
 	virtual ~Game();
 
 	void gameLoop();
-	void creatorMapLoop();
 };

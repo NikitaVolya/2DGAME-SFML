@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "setup.h"
+#include "Camera.h"
 #include "MapManager.h"
 #include "MyFunctions.h"
 
@@ -70,6 +71,6 @@ public:
 	void move();
 
 	virtual void update();
-	virtual void draw(sf::RenderWindow* window);
+	virtual void draw(sf::RenderWindow* window, Camera* camera);
 };
 

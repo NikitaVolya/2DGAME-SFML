@@ -9,6 +9,7 @@
 
 namespace MyFuncs
 {
+
 	sf::Vector2i toVectorInteger(sf::Vector2f& pVector);
 	sf::Vector2i toVectorInteger(sf::Vector2u& pVector);
 

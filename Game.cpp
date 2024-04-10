@@ -34,16 +34,18 @@ void Game::update()
 
 	for (int i = 0; i < Entity::getEntityNumber(); i++)
 		Entity::getEntity(i)->update();
+
+	camera.moveCamera(0, 1);
 }
 
 void Game::render()
 {
 	window->clear(sf::Color(0, 0, 0, 255));
 
-	mapM.draw(window);
+	mapM.draw(window, &camera);
 
 	for (int i = 0; i < Entity::getEntityNumber(); i++)
-		Entity::getEntity(i)->draw(window);
+		Entity::getEntity(i)->draw(window, &camera);
 
 	window->display();
 }

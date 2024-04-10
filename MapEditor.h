@@ -7,6 +7,7 @@
 #include <SFML/Network.hpp>
 
 #include "setup.h"
+#include "Camera.h"
 #include "KeyBoardManager.h"
 #include "MapManager.h"
 #include "TilesBoard.h"
@@ -17,14 +18,10 @@ private:
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
-	sf::Vector2f screenPosition;
-
+	Camera camera;
 	KeyBoardManager kbc;
 	MapManager mapM;
 	TilesBoard* tileBoard;
-
-	float scale;
-	float speed;
 
 	int paintbrush;
 
