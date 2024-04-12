@@ -210,6 +210,8 @@ void MapManager::changeTileOnMap(int pTileID, int x, int y)
 	}
 
 	table[y][x] = tileList[pTileID];
+
+	saveMap();
 }
 
 

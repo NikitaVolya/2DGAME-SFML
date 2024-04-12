@@ -24,12 +24,7 @@ Player::Player(KeyBoardManager* pKBC, sf::Vector2f pPosition) : Entity(pPosition
 	loadTexture("resources\\sprites\\characters\\skeleton\\skeleton2_v2_1.png");
 }
 
-Player::~Player()
-{
-
-}
-
-void Player::update()
+void Player::update(MapManager* mapM)
 {
 	sf::Vector2f moveVector = getDirectionVector() * speed;
 
@@ -41,5 +36,5 @@ void Player::update()
 
 	addMovementImpulse(moveVector);
 
-	Entity::update();
+	Entity::update(mapM);
 }

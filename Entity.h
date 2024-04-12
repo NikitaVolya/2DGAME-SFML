@@ -18,8 +18,6 @@ private:
 
 	static Entity** entityList;
 	static int entityNumber;
-
-	static MapManager* mapM;
 public:
 	static int getEntityNumber();
 	static Entity* getEntity(int index);
@@ -29,7 +27,6 @@ public:
 	static void popEntity(Entity* pEntity);
 	static void clearEntitys();
 
-	static void setMapManager(MapManager* pMapM);
 private:
 
 	int entityId;
@@ -68,9 +65,9 @@ public:
 	sf::Vector2f getMovementVector() { return movementVector; };
 	void addMovementImpulse(sf::Vector2f pVector);
 
-	void move();
+	void move(MapManager* mapM);
 
-	virtual void update();
+	virtual void update(MapManager* mapM);
 	virtual void draw(sf::RenderWindow* window, Camera* camera);
 };
 

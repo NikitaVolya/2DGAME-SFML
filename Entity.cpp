@@ -69,12 +69,6 @@ void Entity::clearEntitys()
 	entityNumber = 0;
 }
 
-void Entity::setMapManager(MapManager* pMapM)
-{
-	mapM = pMapM;
-}
-
-
 //private functions
 void Entity::loadTexture(const char* pFile)
 {
@@ -143,7 +137,7 @@ void Entity::addMovementImpulse(sf::Vector2f pVector)
 }
 
 
-void Entity::move()
+void Entity::move(MapManager* mapM)
 {
 	sf::Vector2f deltaPosition = MyFuncs::divisionVector(movementVector, FRAME_RATE);
 
@@ -153,16 +147,16 @@ void Entity::move()
 	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.3f, size.y * 0.8f);
 	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.7f, size.y * 0.8f);
 
-	if (Entity::mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) || 
-		Entity::mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) ||
-		Entity::mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) ||
-		Entity::mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
+	if (mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) || 
+		mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) ||
+		mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) ||
+		mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
 		deltaPosition.x = 0;
 
-	if (Entity::mapM->getColision(positionLeftTop.x, positionLeftTop.y + deltaPosition.y) ||
-		Entity::mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
-		Entity::mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) ||
-		Entity::mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
+	if (mapM->getColision(positionLeftTop.x, positionLeftTop.y + deltaPosition.y) ||
+		mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
+		mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) ||
+		mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
 		deltaPosition.y = 0;
 
 	position += deltaPosition;
@@ -171,9 +165,9 @@ void Entity::move()
 	movementVector -= MyFuncs::divisionVector(fVector, FRAME_RATE);
 }
 
-void Entity::update()
+void Entity::update(MapManager* mapM)
 {
-	move();
+	move(mapM);
 }
 
 void Entity::draw(sf::RenderWindow* window, Camera* camera)

@@ -4,9 +4,9 @@
 #include "MapEditor.h"
 
 int Entity::globalID = 0;
+
 Entity** Entity::entityList = nullptr;
 int Entity::entityNumber = 0;
-MapManager* Entity::mapM = nullptr;
 
 void tileManager()
 {
@@ -75,7 +75,7 @@ void tileManager()
 void startMapEditor()
 {
 	MapEditor mapEditor;
-	mapEditor.gameLoop();
+	mapEditor.run();
 }
 
 void creatorMod()
@@ -106,7 +106,7 @@ int main()
 	else
 	{
 		Game game;
-		game.gameLoop();
+		game.run();
 	}
 	
 }

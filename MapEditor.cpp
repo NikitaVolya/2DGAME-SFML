@@ -1,38 +1,5 @@
 #include "MapEditor.h"
 
-void MapEditor::initVariables()
-{
-	window = nullptr;
-
-	paintbrush = 0;
-
-	mapM.loadMap();
-	
-	tileBoard = new TilesBoard(mapM);
-}
-
-void MapEditor::initWindow()
-{
-	videoMode.height = SCREEN_HEIGHT + tileBoard->getHeight();
-	videoMode.width = SCREEN_WIDTH;
-
-	window = new sf::RenderWindow(videoMode, "Test", sf::Style::Titlebar | sf::Style::Close);
-
-	window->setFramerateLimit(FRAME_RATE);
-}
-
-void MapEditor::pollEvents()
-{
-	kbc.pollEvents(window);
-
-	if (kbc.getEscape())
-	{
-		window->close();
-		mapM.saveMap();
-		return;
-	}
-}
-
 void MapEditor::update()
 {
 	pollEvents();
@@ -44,7 +11,7 @@ void MapEditor::update()
 		sf::Vector2i position = kbc.getMousePosition() + sf::Vector2i(camera.getPosition().x, camera.getPosition().y);
 
 
-		if (kbc.getMousePosition().y < SCREEN_HEIGHT)
+		if (kbc.getMousePosition().y < SCREEN_HEIGHT - tileBoard->getHeight())
 		{
 			position = MyFuncs::divisionVector(position, camera.getScale() * PIXEL_SIZE);
 
@@ -68,32 +35,18 @@ void MapEditor::update()
 
 void MapEditor::render()
 {
-	window->clear(sf::Color(0, 0, 0, 255));
-
 	mapM.draw(window, &camera);
 	tileBoard->draw(window);
-
-	window->display();
 }
 
-MapEditor::MapEditor()
+MapEditor::MapEditor() : Engine2D()
 {
-	initVariables();
-	initWindow();
+	paintbrush = 0;
+	tileBoard = new TilesBoard(mapM);
 }
 
 MapEditor::~MapEditor()
 {
-	delete window;
+	std::cout << "[ INFO ] MapEditor: destructor\n";
 	delete tileBoard;
-}
-
-void MapEditor::gameLoop()
-{
-	while (window->isOpen())
-	{
-		update();
-
-		render();
-	}
 }

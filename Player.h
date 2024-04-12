@@ -14,7 +14,6 @@ private:
 	sf::Vector2f getDirectionVector();
 public:
 	Player(KeyBoardManager* pKBC, sf::Vector2f pPosition);
-	~Player();
 
-	void update();
+	void update(MapManager* mapM);
 };
