@@ -3,6 +3,7 @@
 
 void MapManager::loadTiles()
 {
+	std::cout << "[ INFO ] MapManager: load tiles\n";
 
 	FILE* f = nullptr;
 	fopen_s(&f, "resources\\data\\tilesData", "ab");
@@ -20,12 +21,16 @@ void MapManager::loadTiles()
 	}
 
 	fclose(f);
+
+	std::cout << "[ INFO ] MapManager: load tiles - done\n";
 }
 
 void MapManager::saveTiles()
 {
 	if (!tileList)
 		return;
+
+	std::cout << "[ INFO ] MapManager: save tiles\n";
 
 	FILE* f = nullptr;
 	fopen_s(&f, "resources\\data\\tilesData", "wb");
@@ -43,8 +48,8 @@ void MapManager::saveTiles()
 		}
 	}
 
-
 	fclose(f);
+	std::cout << "[ INFO ] MapManager: save tiles - done\n";
 }
 
 
@@ -64,6 +69,7 @@ void MapManager::clearTable()
 	height = 0;
 	width = 0;
 }
+
 
 MapManager::MapManager() : tileList(nullptr), tileNumber(0), width(0), height(0), table(nullptr)
 {
@@ -96,7 +102,7 @@ void MapManager::loadMap()
 {
 	clearTable();
 
-	std::cout << "[INFO] MapManager: start load map\nopen file\n";
+	std::cout << "[ INFO ] MapManager: start load map\n";
 
 	FILE* f = nullptr;
 
@@ -106,8 +112,6 @@ void MapManager::loadMap()
 
 	fread(&width, sizeof(short), 1, f);
 	fread(&height, sizeof(short), 1, f);
-
-	std::cout << "[INFO] MapManager: load map with size: " << width << " x " << height << "\n";
 	
 	unsigned short IdData;
 	table = new Tile * *[height];
@@ -122,10 +126,13 @@ void MapManager::loadMap()
 	}
 
 	fclose(f);
+	std::cout << "[ INFO ] MapManager: load map - done\n";
 }
 
 void MapManager::saveMap()
 {
+	std::cout << "[ INFO ] MapManager: save map\n";
+
 	FILE* f = nullptr;
 	fopen_s(&f, "resources\\data\\mapData", "wb");
 
@@ -140,6 +147,7 @@ void MapManager::saveMap()
 		}
 
 	fclose(f);
+	std::cout << "[ INFO ] MapManager: save map - done\n";
 }
 
 bool MapManager::getColision(sf::Vector2f& pPosition) const
@@ -213,7 +221,6 @@ void MapManager::changeTileOnMap(int pTileID, int x, int y)
 
 	saveMap();
 }
-
 
 
 void MapManager::addNewTileType(bool pColision, const char* pImage)

@@ -9,11 +9,11 @@
 class Player : public Entity
 {
 private:
-	KeyBoardManager* kbc;
+	KeyBoardManager& kbc;
 
 	sf::Vector2f getDirectionVector();
 public:
-	Player(KeyBoardManager* pKBC, sf::Vector2f pPosition);
+	Player(KeyBoardManager& pKBC, sf::Vector2f pPosition);
 
 	void update(MapManager* mapM);
 };

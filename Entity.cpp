@@ -59,6 +59,8 @@ void Entity::popEntity(Entity* pEntity)
 
 void Entity::clearEntitys()
 {
+	std::cout << "[ INFO ] Entitys: clear entitys\n";
+
 	if (!entityList)
 		return;
 
@@ -67,6 +69,8 @@ void Entity::clearEntitys()
 	delete[] entityList;
 
 	entityNumber = 0;
+
+	std::cout << "[ INFO ] Entitys: clear entitys - done\n";
 }
 
 //private functions
@@ -141,22 +145,22 @@ void Entity::move(MapManager* mapM)
 {
 	sf::Vector2f deltaPosition = MyFuncs::divisionVector(movementVector, FRAME_RATE);
 
-	sf::Vector2f positionLeftTop = position + sf::Vector2f(size.x * 0.3f, size.y * 0.6f);
-	sf::Vector2f positionRightTop = position + sf::Vector2f(size.x * 0.7f, size.y * 0.6f);
+	float positionLeft = position.x + size.x * .4f;
+	float positionRight = position.x + size.x * .6f;
 
-	sf::Vector2f positionLeftBottom = position + sf::Vector2f(size.x * 0.3f, size.y * 0.8f);
-	sf::Vector2f positionRightBottom = position + sf::Vector2f(size.x * 0.7f, size.y * 0.8f);
+	float positionTop = position.y + size.y * .6f;
+	float positionBottom = position.y + size.y * .9f;
 
-	if (mapM->getColision(positionLeftTop.x + deltaPosition.x, positionLeftTop.y) || 
-		mapM->getColision(positionRightTop.x + deltaPosition.x, positionRightTop.y) ||
-		mapM->getColision(positionLeftBottom.x + deltaPosition.x, positionLeftBottom.y) ||
-		mapM->getColision(positionRightBottom.x + deltaPosition.x, positionRightBottom.y))
+	if (mapM->getColision(positionLeft + deltaPosition.x, positionTop) ||
+		mapM->getColision(positionRight + deltaPosition.x, positionTop) ||
+		mapM->getColision(positionRight + deltaPosition.x, positionBottom) ||
+		mapM->getColision(positionLeft + deltaPosition.x, positionBottom))
 		deltaPosition.x = 0;
 
-	if (mapM->getColision(positionLeftTop.x, positionLeftTop.y + deltaPosition.y) ||
-		mapM->getColision(positionRightTop.x, positionRightTop.y + deltaPosition.y) ||
-		mapM->getColision(positionLeftBottom.x, positionLeftBottom.y + deltaPosition.y) ||
-		mapM->getColision(positionRightBottom.x, positionRightBottom.y + deltaPosition.y))
+	if (mapM->getColision(positionLeft, positionTop + deltaPosition.y) ||
+		mapM->getColision(positionRight, positionTop + deltaPosition.y) ||
+		mapM->getColision(positionRight, positionBottom + deltaPosition.y) ||
+		mapM->getColision(positionLeft, positionBottom + deltaPosition.y))
 		deltaPosition.y = 0;
 
 	position += deltaPosition;

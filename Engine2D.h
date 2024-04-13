@@ -29,6 +29,9 @@ protected:
 
 	virtual void update();
 	virtual void render();
+
+	void updateEntitys();
+	void renderEntitys();
 public:
 	Engine2D();
 	virtual ~Engine2D();
