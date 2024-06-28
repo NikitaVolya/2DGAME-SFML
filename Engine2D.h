@@ -7,8 +7,8 @@
 #include <SFML/Network.hpp>
 
 #include "setup.h"
+#include "Camera.h"
 #include "Entity.h"
-#include "MapManager.h"
 #include "KeyBoardManager.h"
 
 
@@ -18,17 +18,18 @@ protected:
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
 
+	DoubleLinkedList<GameObject*> gameObjectsList;
+
 	Camera camera;
 	KeyBoardManager kbc;
-	MapManager mapM;
 
 	virtual void initVariables();
 	void initWindow();
 
 	void pollEvents();
 
-	virtual void update();
-	virtual void render();
+	virtual void update() = 0;
+	virtual void render() = 0;
 
 	void updateEntitys();
 	void renderEntitys();

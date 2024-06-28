@@ -8,8 +8,8 @@ class Game : public Engine2D
 private:
 	Player* player;
 
-	void update();
-	void render();
+	void update() override;
+	void render() override;
 public:
 	Game();
 	~Game();

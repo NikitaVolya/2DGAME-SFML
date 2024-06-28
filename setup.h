@@ -1,6 +1,8 @@
 #pragma once
 
-#define CREATOR_MODE false
+#include <SFML/System/Vector2.hpp>
+
+#define CREATOR_MODE true
 #define TILES_FILES "resources\\sprites\\tile\\"
 
 #define FRAME_RATE 60
@@ -12,5 +14,9 @@
 
 #define SCREEN_WIDTH (WIDTH * PIXEL_SIZE)
 #define SCREEN_HEIGHT (HEIGHT * PIXEL_SIZE)
+#define SCREEN_SIZE sf::Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-#define F 10.5f
+#define SPEED_SCREEN_TO_ENTITY 0.015f
+#define MINIMUM_SCREEN_STEP PIXEL_SIZE
+
+#define F 0.28f
