@@ -34,6 +34,7 @@ public:
 	int getMouseWheel() { return mouseWheel; };
 
 	sf::Vector2i getMousePosition() { return mousePosition; };
+	sf::Vector2f getMousePositionF() { return sf::Vector2f((float)mousePosition.x, (float)mousePosition.y); };
 
 	void pollEvents(sf::RenderWindow* window);
 };
