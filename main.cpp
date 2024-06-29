@@ -2,20 +2,11 @@
 #include <iostream>
 #include <vector>
 
-#include "Game.h"
-#include "MapEditor.h"
-
-DoubleLinkedList<GameSprite*> GameSprite::GameSpriteListe{};
-
-void startMapEditor()
-{
-	MapEditor mapEditor;
-	mapEditor.run();
-}
+#include "Engine2D.h"
 
 void startGame()
 {
-	Game game;
+	Engine2D game;
 	game.run();
 }
 
@@ -24,18 +15,15 @@ void creatorMod()
 	int choice;
 	while (true)
 	{
-		std::cout << "Select mod:\n1. create map\n2. start game\n3. exit\n";
+		std::cout << "Select mod:\n1. start game\n2. exit\n";
 		std::cin >> choice;
 		switch (choice)
 		{
 			case 1:
-				startMapEditor();
-				return;
-			case 2:
 				startGame();
 				return;
 				break;
-			case 3:
+			case 2:
 				return;
 		}
 	}

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 
-#include "setup.h"
-#include "MyFunctions.h"
-#include "GameSprite.h"
+#ifndef GAME_OBJECT
+#define GAME_OBJECT
+
+class GameSprite;
+class Engine2D;
 
 class GameObject
 {
@@ -15,44 +16,40 @@ protected:
 	private:
 		GameObject& owner;
 		float radius;
+
 	public:
-		Colider(GameObject& pOwner, float pRadius) : owner{ pOwner }, radius{ pRadius } {};
+		Colider(GameObject& pOwner, float pRadius) : owner(pOwner), radius(pRadius) {};
 
 		float getRadius() const { return radius; }
-		sf::Vector2f getPosition() const { return owner.getCenterPosition(); }
+		sf::Vector2f getPosition() const { return owner.getPositionCenter(); }
 
-		bool colideWith(const Colider& other) { return getDistance(other) <= 0; };
-		sf::Vector2f vectorForce(const Colider& other);
-
-		double getDistance(const Colider& other);
+		bool colideWith(const Colider& other) const;
+		double distance(const Colider& other) const;
 	};
 
-	GameSprite* gameSprite;
-	Colider* colider;
+	Engine2D& game;
+	GameSprite* objectSprite;
+	
 
-	sf::Vector2f movementVector;
+	sf::Vector2f size;
+	Colider colider;
 
 	sf::Vector2f position;
-	sf::Vector2f size;
-	bool rotate;
 public:
-	GameObject(const sf::Vector2f& pPosition);
+	GameObject(Engine2D& pGame, const sf::Vector2f& pPosition);
 	~GameObject();
 
+	const Engine2D* getGame() const { return &game; }
+
 	sf::Vector2f getPosition() const { return position; }
-	sf::Vector2f getCenterPosition() const { return position + size * 0.5f; }
-	sf::Vector2f getSize() const { return size; }
-	bool getRotate() const { return rotate; }
+	sf::Vector2f getPositionCenter() const { return position + size * 0.5f; }
+	const Colider& getColider() const { return colider; }
 
-	const Colider& getColider() const { return *colider; }
+	sf::Vector2f getVectorTo(const GameObject& other) const { return other.getPositionCenter() - getPositionCenter(); }
+	double getDistanceTo(const GameObject& other) const { return colider.distance(other.colider); }
 
-	void setPosition(const sf::Vector2f& pPosition) { position = pPosition; };
-	void setRotate(bool pValue) { rotate = pValue; }
-
-	sf::Vector2f getMovementVector() { return movementVector; };
-	void addMovementImpulse(const sf::Vector2f& pVector);
-
-	virtual void events() {};
-	void update(const DoubleLinkedList<GameObject*>& gameObjectList);
-	virtual void draw(sf::RenderWindow* window, const sf::Vector2f& pCameraPosition);
+	virtual void update();
+	void draw();
 };
+
+#endif // !GAME_OBJECT

@@ -1,19 +1,24 @@
 #pragma once
 
+#ifndef ENTITY_H
+#define ENTITY_H
+
 #include "GameObject.h"
 
 class Entity : public GameObject
 {
-private:
+protected:
+	sf::Vector2f movementVector;
+
 	float speed;
 public:
-	Entity(const sf::Vector2f& pPosition);
-	~Entity();
+	Entity(Engine2D& pGame, const sf::Vector2f& pPosition);
 
-	float getSpeed() const { return speed; };
+	void addImpuls(const sf::Vector2f& value);
+	void addImpuls(float x, float y);
 
-	void setSpeed(float pValue);
-
-	virtual void events() override {};
+	virtual void update();
 };
 
+
+#endif // !ENTITY_H

@@ -1,13 +1,15 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-
 #define CREATOR_MODE true
 #define TILES_FILES "resources\\sprites\\tile\\"
 
-#define FRAME_RATE 60
+#define SCALE 3
 
-#define PIXEL_SIZE (16 * 3)
+#define FRAME_RATE 60
+#define FRAME_RATE_F 60.f
+
+#define PIXEL_SIZE (16 * SCALE)
+#define PIXEL_SIZE_F (16.f * SCALE)
 
 #define WIDTH 16
 #define HEIGHT 9

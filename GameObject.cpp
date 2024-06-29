@@ -1,58 +1,35 @@
 #include "GameObject.h"
+#include "Engine2D.h"
+#include "GameSprite.h"
+#include "MyFunctions.h"
 
-GameObject::GameObject(const sf::Vector2f& pPosition) : 
-	gameSprite(nullptr), movementVector{ 0, 0 }, position{ pPosition },
-	size{PIXEL_SIZE, PIXEL_SIZE}, rotate(false)
+GameObject::GameObject(Engine2D& pGame, const sf::Vector2f& pPosition)
+	: game(pGame), size{ PIXEL_SIZE_F, PIXEL_SIZE_F }, colider{ *this, size.x * 0.45f }, position(pPosition)
 {
-	gameSprite = GameSprite::loadSprite(1);
-	colider = new Colider{ *this, size.x * 0.45f };
+	objectSprite = new GameSprite("resources\\sprites\\entity\\skeleton2_v2_1.png");
 }
 
 GameObject::~GameObject()
 {
-	delete colider;
+	delete objectSprite;
 }
 
-void GameObject::addMovementImpulse(const sf::Vector2f& pVector)
+void GameObject::update()
 {
-	movementVector += pVector;
+
 }
 
-void GameObject::update(const DoubleLinkedList<GameObject*>& gameObjectList)
+void GameObject::draw()
 {
-	events();
-
-	for (DoubleLinkedList<GameObject*>::Iterator it = gameObjectList.begin();
-		it != gameObjectList.end(); ++it)
-	{
-		movementVector += colider->vectorForce(it.value()->getColider());
-	}
-
-	position += movementVector * (1.f / FRAME_RATE);
-	movementVector -= movementVector * F;
+	objectSprite->draw(game.getWindow(), position);
 }
 
-void GameObject::draw(sf::RenderWindow* window, const sf::Vector2f& pCameraPosition)
+bool GameObject::Colider::colideWith(const Colider& other) const
 {
-	sf::Vector2f drawPosition = position - pCameraPosition;
-	gameSprite->draw(window, drawPosition, rotate);
+	return distance(other) <= 0.f;
 }
 
-sf::Vector2f GameObject::Colider::vectorForce(const Colider& other)
+double GameObject::Colider::distance(const Colider& other) const
 {
-	if (&other == this)
-		return sf::Vector2f{ 0, 0 };
-	float dist = static_cast<float>(getDistance(other));
-	if (dist > 0)
-		return sf::Vector2f{ 0, 0 };
-	sf::Vector2f direction = other.getPosition() - getPosition();
-	direction = MyFuncs::normolize(direction);
-
-	return direction * -(dist * dist);
-}
-
-double GameObject::Colider::getDistance(const Colider& other)
-{
-	sf::Vector2f dis = other.getPosition() - getPosition();
-	return MyFuncs::lenghtVector(dis) - radius - other.getRadius();
+	return MyFuncs::lenghtVector(other.getPosition() - getPosition()) - radius - other.getRadius();
 }

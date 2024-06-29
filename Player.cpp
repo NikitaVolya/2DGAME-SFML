@@ -1,47 +1,28 @@
 #include "Player.h"
+#include "Engine2D.h"
+#include "MyFunctions.h"
 
-sf::Vector2f Player::getDirectionVector()
+#define KeyBoardManager game.getKeyBoardManager()
+
+Player::Player(Engine2D& pGame, const sf::Vector2f& pPosition) : Entity(pGame, pPosition)
 {
-	sf::Vector2f moveVector(0.f, 0.f);
-
-	if (kbc.getUp())
-		moveVector.y -= 1;
-	if (kbc.getLeft())
-		moveVector.x -= 1;
-	if (kbc.getRight())
-		moveVector.x += 1;
-	if (kbc.getBottom())
-		moveVector.y += 1;
-
-	return MyFuncs::normolize(moveVector);
 }
 
-sf::Vector2f Player::getVectorToMouse()
+void Player::update()
 {
-	sf::Vector2f vectorToMouse = kbc.getMousePositionF() - (getCenterPosition()  - camera.getPosition());
-	return MyFuncs::normolize(vectorToMouse);
-}
+	sf::Vector2f direction{ 0, 0 };
 
-Player::Player(KeyBoardManager& pKBC, Camera& pCamera, sf::Vector2f pPosition) : kbc(pKBC), camera(pCamera), Entity(pPosition), actionCD(0)
-{
-	setSpeed(1);
-}
+	if (KeyBoardManager.getUp())
+		direction.y -= 1;
+	if (KeyBoardManager.getBottom())
+		direction.y += 1;
+	if (KeyBoardManager.getLeft())
+		direction.x -= 1;
+	if (KeyBoardManager.getRight())
+		direction.x += 1;
 
-void Player::events()
-{
-	if (!actionCD && kbc.getMouseLeft())
-	{
-		actionCD = FRAME_RATE * 2;
-		addMovementImpulse(getVectorToMouse() * 45.f * (float)PIXEL_SIZE);
-	}
-	if (actionCD) actionCD--;
+	direction = MyFuncs::normolize(direction) * speed * PIXEL_SIZE_F;
+	addImpuls(direction);
 
-	sf::Vector2f moveVector = getDirectionVector() * getSpeed();
-	addMovementImpulse(moveVector);
-
-	if (movementVector.x != 0)
-		if (movementVector.x < 0)
-			setRotate(true);
-		else
-			setRotate(false);
+	Entity::update();
 }

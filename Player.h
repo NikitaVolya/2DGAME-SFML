@@ -1,24 +1,19 @@
 #pragma once
 
-#include <SFML/Window/Event.hpp>
+#ifndef PLAYER
+#define PLAYER
 
 #include "Entity.h"
-#include "KeyBoardManager.h"
-#include "Camera.h"
 
+class Engine2D;
 
 class Player : public Entity
 {
-private:
-	KeyBoardManager& kbc;
-	Camera& camera;
-
-	int actionCD;
-
-	sf::Vector2f getDirectionVector();
-	sf::Vector2f getVectorToMouse();
 public:
-	Player(KeyBoardManager& pKBC, Camera& pCamera, sf::Vector2f pPosition);
+	Player(Engine2D& pGame, const sf::Vector2f& pPosition);
 
-	void events() override;
+	void update() override;
 };
+
+
+#endif // !PLAYER

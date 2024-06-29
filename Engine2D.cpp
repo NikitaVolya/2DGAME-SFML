@@ -1,8 +1,15 @@
 #include "Engine2D.h"
+#include "GameObject.h"
+
+#define ITERATOR DoubleLinkedList<GameObject*>::Iterator
 
 void Engine2D::initVariables()
 {
 	window = nullptr;
+
+	player = new Player{ *this, sf::Vector2f(PIXEL_SIZE * 2, PIXEL_SIZE * 2) };
+	gameObjectsListe.add(player);
+	gameObjectsListe.append(new Entity{ *this, sf::Vector2f(PIXEL_SIZE * 3, PIXEL_SIZE * 2) });
 }
 
 void Engine2D::initWindow()
@@ -26,6 +33,20 @@ void Engine2D::pollEvents()
 	}
 }
 
+void Engine2D::update()
+{
+	for (ITERATOR it = gameObjectsListe.begin();
+		it != gameObjectsListe.end(); ++it)
+		it.value()->update();
+}
+
+void Engine2D::render()
+{
+	for (ITERATOR it = gameObjectsListe.begin();
+		it != gameObjectsListe.end(); ++it)
+		it.value()->draw();
+}
+
 void Engine2D::updateEntitys()
 {
 }
@@ -42,13 +63,11 @@ Engine2D::Engine2D()
 
 Engine2D::~Engine2D()
 {
-	for (DoubleLinkedList<GameObject*>::Iterator it = gameObjectsList.begin();
-		it != gameObjectsList.end(); ++it)
-		delete it.value();
-	gameObjectsList.clear();
-
 	delete window;
-	GameSprite::clearSprites();
+	
+	for (DoubleLinkedList<GameObject*>::Iterator it = gameObjectsListe.begin();
+		it != gameObjectsListe.end(); ++it)
+		delete it.value();
 }
 
 void Engine2D::run()

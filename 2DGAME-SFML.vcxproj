@@ -133,28 +133,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Engine2D.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameSprite.cpp" />
     <ClCompile Include="KeyBoardManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="MyFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="DoubleLinkedListe.h" />
     <ClInclude Include="Engine2D.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameSprite.h" />
     <ClInclude Include="KeyBoardManager.h" />
-    <ClInclude Include="MapEditor.h" />
     <ClInclude Include="MyFunctions.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="setup.h" />

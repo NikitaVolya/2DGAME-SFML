@@ -22,16 +22,16 @@ private:
 public:
 	KeyBoardManager() : up(false), left(false), right(false), bottom(false), escape(false), mouseLeft(false), mouseRight(false), mouseWheel(0) {};
 
-	bool getUp() { return up; };
-	bool getLeft() { return left; };
-	bool getRight() { return right; };
-	bool getBottom() { return bottom; };
-	bool getEscape() { return escape; };
+	bool getUp() const { return up; };
+	bool getLeft() const { return left; };
+	bool getRight() const { return right; };
+	bool getBottom() const { return bottom; };
+	bool getEscape() const { return escape; };
 
-	bool getMouseLeft() { return mouseLeft; };
-	bool getMouseRight() { return mouseRight; };
+	bool getMouseLeft() const { return mouseLeft; };
+	bool getMouseRight() const { return mouseRight; };
 
-	int getMouseWheel() { return mouseWheel; };
+	int getMouseWheel() const { return mouseWheel; };
 
 	sf::Vector2i getMousePosition() { return mousePosition; };
 	sf::Vector2f getMousePositionF() { return sf::Vector2f((float)mousePosition.x, (float)mousePosition.y); };
