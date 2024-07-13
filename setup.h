@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef SETUP_H
+#define SETUP_H
+
 #define CREATOR_MODE true
 #define TILES_FILES "resources\\sprites\\tile\\"
 
@@ -21,4 +24,9 @@
 #define SPEED_SCREEN_TO_ENTITY 0.015f
 #define MINIMUM_SCREEN_STEP PIXEL_SIZE
 
+#define Pi 3.1415;
 #define F 0.28f
+
+#endif // !SETUP_H
+
+

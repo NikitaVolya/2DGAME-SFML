@@ -4,25 +4,31 @@
 
 #define KeyBoardManager game.getKeyBoardManager()
 
-Player::Player(Engine2D& pGame, const sf::Vector2f& pPosition) : Entity(pGame, pPosition)
+Player::Player(Engine2D& pGame, const sf::Vector2f& pPosition) : Entity(pGame, pPosition), skill(*this, 0.5f)
 {
 }
 
 void Player::update()
 {
-	sf::Vector2f direction{ 0, 0 };
+
+	sf::Vector2f impulsVector{ 0, 0 };
 
 	if (KeyBoardManager.getUp())
-		direction.y -= 1;
+		impulsVector.y -= 1;
 	if (KeyBoardManager.getBottom())
-		direction.y += 1;
+		impulsVector.y += 1;
 	if (KeyBoardManager.getLeft())
-		direction.x -= 1;
+		impulsVector.x -= 1;
 	if (KeyBoardManager.getRight())
-		direction.x += 1;
+		impulsVector.x += 1;
 
-	direction = MyFuncs::normolize(direction) * speed * PIXEL_SIZE_F;
-	addImpuls(direction);
+	impulsVector = MyFuncs::normolize(impulsVector) * speed * PIXEL_SIZE_F;
+	addImpuls(impulsVector);
+
+	if (game.getKeyBoardManager().getMouseLeft())
+		skill.execute(getDirectionToMouse());
+	skill.update();
+
 
 	Entity::update();
 }

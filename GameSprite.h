@@ -13,9 +13,14 @@ class GameSprite
 private:
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Vector2f size;
 	bool rotate;
 public:
-	GameSprite(const char* href);
+	GameSprite(const char* href, const sf::Vector2f& pSize);
+
+	void rotateRight();
+	void rotateLeft();
+	void rotateSprite();
 
 	void draw(sf::RenderWindow* window, const sf::Vector2f& pPosition);
 };

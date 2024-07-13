@@ -18,35 +18,53 @@ private:
 public:
     class Iterator
     {
-    private:
-        Node* iterator_node;
-        bool revers;
+    protected:
+        Node* corent_node;
     public:
-        Iterator(Node* node, bool isRevers = false) : iterator_node(node), revers(isRevers) {};
-        Iterator(const Iterator& other) : iterator_node(other.iterator_node), revers(other.revers) {};
+        Iterator(Node* node) : corent_node(node) {};
+        Iterator(const Iterator& other) : corent_node(other.corent_node) {};
+        Iterator() : corent_node(nullptr) {};
 
-        T& value() { if (!iterator_node) throw std::out_of_range("Iterator is out of range"); return iterator_node->value; }
+        T& value() { if (!corent_node) throw std::out_of_range("Iterator is out of range"); return corent_node->value; }
+        const T& value() const { if (!corent_node) throw std::out_of_range("Iterator is out of range"); return corent_node->value; }
 
-        bool operator==(const Iterator& other) const { return iterator_node == other.iterator_node; }
-        bool operator!=(const Iterator& other) const { return iterator_node != other.iterator_node; }
+        operator bool() const { return corent_node; }
 
-        DoubleLinkedList<T>::Iterator& operator++()
+        virtual void operator++() = 0;
+
+        T* operator->() { return &corent_node->value; }
+        const T* operator->() const { return &corent_node->value; }
+
+        T& operator*() { return value(); }
+        const T& operator*() const { return value(); }
+    };
+    class Forward_Iterator : public DoubleLinkedList<T>::Iterator
+    {
+    public:
+        Forward_Iterator(Node* node) : Iterator{ node } {};
+        Forward_Iterator(const Iterator& other) : Iterator{ other } {};
+        Forward_Iterator() : Iterator{} {}
+
+        void operator++() override
         {
-            if (!iterator_node)
+            if (!this->corent_node)
                 throw std::out_of_range("Iterator is out of range");
-            if (revers)
-                iterator_node = iterator_node->last;
-            else
-                iterator_node = iterator_node->next;
-            return *this;
+            this->corent_node = this->corent_node->next;
         }
-        DoubleLinkedList<T>::Iterator& operator++(int)
-        {
-            Iterator tmp = *this;
-            *this++;
-            return tmp;
-        }
+     };
+    class Revers_Iterator : public DoubleLinkedList<T>::Iterator
+    {
+    public:
+        Revers_Iterator(Node* node) : Iterator{ node } {};
+        Revers_Iterator(const Iterator& other) : Iterator{ other } {};
+        Revers_Iterator() : Iterator{} {}
 
+        void operator++() override
+        {
+            if (!this->corent_node)
+                throw std::out_of_range("Iterator is out of range");
+            this->corent_node = this->corent_node->last;
+        }
     };
 
     DoubleLinkedList() : head(nullptr), back(nullptr), size(0) {}
@@ -63,10 +81,8 @@ public:
     T& operator[](int index) { return at(index); }
     const T& operator[](int index) const { return at(index); }
 
-    Iterator begin() const { return Iterator(head); }
-    Iterator rbegin() const { return Iterator(back, true); }
-    Iterator end() const { return Iterator(nullptr); }
-    Iterator rend() const { return Iterator(nullptr); }
+    Forward_Iterator begin() const { return Forward_Iterator(head); }
+    Revers_Iterator rbegin() const { return Revers_Iterator(back); }
    
     DoubleLinkedList<T>& add(const T& value);
     DoubleLinkedList<T>& pop();
@@ -74,8 +90,12 @@ public:
     DoubleLinkedList<T>& append(const T& value);
     DoubleLinkedList<T>& popend();
 
-    DoubleLinkedList<T>& remove(int index);
+    DoubleLinkedList<T>& pop(int index);
     DoubleLinkedList<T>& insert(int index, const T& value);
+
+    T remove(const T& value);
+
+    int find(const T& value) const;
 
     std::ostream& print(std::ostream& out = std::cout, char endC = '\n') const;
     std::ostream& print(char endC) const { return print(std::cout, endC); }
@@ -186,7 +206,7 @@ inline DoubleLinkedList<T>& DoubleLinkedList<T>::popend()
 }
 
 template<typename T>
-inline DoubleLinkedList<T>& DoubleLinkedList<T>::remove(int index)
+inline DoubleLinkedList<T>& DoubleLinkedList<T>::pop(int index)
 {
     if (index < 0 || index >= size)
         throw std::out_of_range("index is out of range");
@@ -227,6 +247,50 @@ inline DoubleLinkedList<T>& DoubleLinkedList<T>::insert(int index, const T& valu
     tmp->last = newNode;
     size++;
     return *this;
+}
+
+template<typename T>
+inline T DoubleLinkedList<T>::remove(const T& value)
+{
+    Node* tmp = head;
+    while (tmp)
+    {
+        if (value == tmp->value)
+        {
+            if (tmp->last)
+                tmp->last->next = tmp->next;
+            else
+                head = tmp->next;
+            if (tmp->next)
+                tmp->next->last = tmp->last;
+            else
+                back = tmp->last;
+
+            T returnValue = tmp->value;
+
+            delete tmp;
+            size--;
+            return returnValue;
+        }
+
+        tmp = tmp->next;
+    }
+    throw std::out_of_range("Element not found");
+}
+
+template<typename T>
+inline int DoubleLinkedList<T>::find(const T& value) const
+{
+    Node* tmp = head;
+    int index = 0;
+    while (tmp)
+    {
+        if (tmp->value == value)
+            return index;
+        tmp = tmp->next;
+        index++;
+    }
+    return -1;
 }
 
 template<typename T>

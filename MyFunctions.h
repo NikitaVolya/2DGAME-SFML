@@ -19,7 +19,7 @@ namespace MyFuncs
 	sf::Vector2f toVectorFloat(sf::Vector2u& pVector);
 
 
-	sf::Vector2f& normolize(sf::Vector2f& pVector);
+	sf::Vector2f normolize(const sf::Vector2f& pVector);
 	inline double lenghtVector(const sf::Vector2f& pVector);
 
 	bool questionYesNo(const char* pString);

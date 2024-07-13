@@ -22,16 +22,17 @@ sf::Vector2f MyFuncs::toVectorFloat(sf::Vector2u& pVector)
     return sf::Vector2f(static_cast<float>(pVector.x), static_cast<float>(pVector.y));
 }
 
-sf::Vector2f& MyFuncs::normolize(sf::Vector2f& pVector)
+sf::Vector2f MyFuncs::normolize(const sf::Vector2f& pVector)
 {
-    double lenghtV = lenghtVector(pVector);
+    sf::Vector2f rep = pVector;
+    double lenghtV = lenghtVector(rep);
     if (lenghtV == 0)
-        return pVector;
+        return rep;
 
-    pVector.x = static_cast<float>(pVector.x / lenghtV);
-    pVector.y = static_cast<float>(pVector.y / lenghtV);
+    rep.x = static_cast<float>(rep.x / lenghtV);
+    rep.y = static_cast<float>(rep.y / lenghtV);
 
-    return pVector;
+    return rep;
 }
 
 double MyFuncs::lenghtVector(const sf::Vector2f& pVector)

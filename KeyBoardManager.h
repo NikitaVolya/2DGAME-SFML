@@ -33,8 +33,8 @@ public:
 
 	int getMouseWheel() const { return mouseWheel; };
 
-	sf::Vector2i getMousePosition() { return mousePosition; };
-	sf::Vector2f getMousePositionF() { return sf::Vector2f((float)mousePosition.x, (float)mousePosition.y); };
+	sf::Vector2i getMousePosition() const { return mousePosition; };
+	sf::Vector2f getMousePositionF() const { return sf::Vector2f(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y)); };
 
 	void pollEvents(sf::RenderWindow* window);
 };

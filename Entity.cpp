@@ -3,33 +3,22 @@
 #include "MyFunctions.h"
 
 #define ENTITY_LIST game.getGameObjects()
-#define ITERATOR DoubleLinkedList<GameObject*>::Iterator
 
-Entity::Entity(Engine2D& pGame, const sf::Vector2f& pPosition) : GameObject{ pGame, pPosition }, movementVector{0, 0}, speed{1}
+Entity::Entity(Engine2D& pGame, const sf::Vector2f& pPosition) : GameObject{ pGame, pPosition }, speed{1}
 {
 }
 
-void Entity::addImpuls(const sf::Vector2f& value)
-{
-	movementVector += value;
-}
-
-void Entity::addImpuls(float x, float y)
-{
-	movementVector.x += x;
-	movementVector.y += y;
-}
 
 void Entity::update()
 {
-	for (ITERATOR it = ENTITY_LIST.begin(); it != ENTITY_LIST.end(); ++it)
+	for (auto it = ENTITY_LIST.begin(); it; ++it)
 	{
-		if (it.value() == this)
+		if (*it == this || !(*it)->getColideAbility())
 			continue;
-		float distance = static_cast<float>(getDistanceTo(*it.value()));
+		float distance = static_cast<float>(getDistanceTo(**it));
 		if (distance <= 0)
 		{
-			sf::Vector2f direction = getVectorTo(*it.value());
+			sf::Vector2f direction = getVectorTo(**it);
 			direction = MyFuncs::normolize(direction);
 			direction *= distance * distance;
 			addImpuls(-direction);
@@ -37,6 +26,16 @@ void Entity::update()
 	}
 
 
-	position += movementVector * (1.f / FRAME_RATE_F);
-	movementVector -= movementVector * F;
+	GameObject::update();
+}
+
+void Entitys::ShooterEntity::update()
+{
+	skill.update();
+	skill.execute(getDirectionTo(game.getPlayer()));
+
+	float moveFrame = game.getTime() / (walkTime * FRAME_RATE_F) * 2 * Pi;
+	addImpuls(direction * sinf(moveFrame) * PIXEL_SIZE_F);
+
+	GameObject::update();
 }

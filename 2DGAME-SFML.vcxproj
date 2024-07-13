@@ -141,6 +141,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="SkillCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoubleLinkedListe.h" />
@@ -151,7 +153,9 @@
     <ClInclude Include="KeyBoardManager.h" />
     <ClInclude Include="MyFunctions.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="setup.h" />
+    <ClInclude Include="SkillCounter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

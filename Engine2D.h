@@ -20,14 +20,17 @@ class Entity;
 class Engine2D
 {
 protected:
+
 	sf::RenderWindow* window;
 	sf::VideoMode videoMode;
+	size_t time;
 
 	KeyBoardManager kbc;
 
 	Player* player;
 
 	DoubleLinkedList<GameObject*> gameObjectsListe;
+	DoubleLinkedList<GameObject*> toDeleteListe;
 
 	void initVariables();
 	void initWindow();
@@ -38,7 +41,8 @@ protected:
 	void render();
 
 	void updateEntitys();
-	void renderEntitys();
+
+	void deleteToKillObjects();
 public:
 	Engine2D();
 	~Engine2D();
@@ -47,6 +51,14 @@ public:
 	sf::RenderWindow* getWindow() { return window; }
 	DoubleLinkedList<GameObject*>& getGameObjects() { return gameObjectsListe; }
 	const DoubleLinkedList<GameObject*>& getGameObjects() const { return gameObjectsListe; }
+
+
+	GameObject* getPlayer() { return static_cast<GameObject*>(player); }
+
+	size_t getTime() const { return time; }
+
+	void addEntity(GameObject* obj);
+	void killGameObject(GameObject* obj);
 
 	void run();
 };
